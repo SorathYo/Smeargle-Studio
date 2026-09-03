@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('/Pokemon_Wallpaper.jpeg'); /* pega direto da pasta public */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+
+  overflow: hidden;
+}
