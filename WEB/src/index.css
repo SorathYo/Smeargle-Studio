@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
+:root {
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'Work Sans', sans-serif;
+}
+
 body {
+  font-family: var(--font-sans);
   margin: 0;
   padding: 0;
   background-image: url('/Pokemon_Wallpaper.jpeg'); /* pega direto da pasta public */
@@ -11,3 +18,25 @@ body {
 
   overflow: hidden;
 }
+
+/* Classes utilitárias */
+.titulo {
+  font-family: var(--font-display);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.bg-smeargle-brown {
+  background-color: #8b5e3c;
+}
+
+.bg-smeargle-cream {
+  background-color: #f5ede0;
+}
+
+.text-smeargle-dark {
+  color: #5c3a18;
+}
+
