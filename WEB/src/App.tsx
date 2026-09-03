@@ -1,7 +1,12 @@
+import { useState } from "react";
+import PaletteSelector from "./components/palette-selector";
+import ImageColorPicker from "./components/image-color-picker"; 
+
 import SmeargleIcon from './assets/Smeargle_Icon.png';
 import ManchasIcon from './assets/Manchas_De_Tinta.png';
 
-function App() {
+export default function App() {
+  const [tab, setTab] = useState("Imagem");
 
   return (
     <div className="flex items-center justify-center h-screen ">
@@ -30,7 +35,6 @@ function App() {
             </div>
           </div>
 
-
           {/* Barra inferior com blocos de cor */}
           <div className="absolute bottom-0 left-0 w-full h-2 flex">
             <div className="flex-1 bg-[#C9B39B]"></div>
@@ -42,21 +46,34 @@ function App() {
         </div>
 
         {/* Barra de navegação */}
-        <div className="flex bg-smeargle-cream text-sm font-semibold text-smeargle-dark">
-          <button className="flex-1 py-2 text-center hover:bg-smeargle-brown transition">
+        <div
+          className="flex bg-smeargle-cream text-sm font-semibold text-smeargle-dark border-b"
+          style={{ borderColor: "#E1D4C2" }}
+        >
+          <button
+            onClick={() => setTab("Imagem")}
+            className={`flex-1 py-2 text-center transition ${
+              tab === "Imagem" ? "bg-smeargle-brown text-white" : "hover:bg-smeargle-brown"
+            }`}
+          >
             Imagem
           </button>
-          <button className="flex-1 py-2 text-center hover:bg-smeargle-brown transition">
+          <button
+            onClick={() => setTab("Personalização")}
+            className={`flex-1 py-2 text-center transition ${
+              tab === "Personalização" ? "bg-smeargle-brown text-white" : "hover:bg-smeargle-brown"
+            }`}
+          >
             Personalização
           </button>
         </div>
 
-        {/* Conteúdo */}
+        {/* Conteúdo dinâmico */}
         <div className="bg-smeargle-cream p-6 text-center text-sm text-smeargle-dark">
-          Conteúdo
+          {tab === "Imagem" && <ImageColorPicker />}
+          {tab === "Personalização" && <PaletteSelector />}
         </div>
       </div>
-    </div>)
+    </div>
+  );
 }
-
-export default App
