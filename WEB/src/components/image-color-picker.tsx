@@ -264,10 +264,58 @@ export default function ImageColorPicker() {
         >
           <div className="pointer-events-none text-center">
 
-            <div className="mb-3 text-4xl">
-              🖼️
-            </div>
+            <div className="mb-3">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="mx-auto"
+              >
+                {/* moldura */}
+                <rect
+                  x="4"
+                  y="10"
+                  width="40"
+                  height="30"
+                  rx="5"
+                  fill="#e8dcc8"
+                  stroke="#c4a882"
+                  strokeWidth="1.5"
+                />
 
+                {/* sol / círculo */}
+                <circle
+                  cx="15"
+                  cy="20"
+                  r="4"
+                  fill="#8b5e3c"
+                  opacity="0.4"
+                />
+
+                {/* montanhas */}
+                <path
+                  d="M6 36 L18 24 L28 32 L36 22 L44 34"
+                  stroke="#6aab5a"
+                  strokeWidth="2"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+
+                {/* ponta do pincel */}
+                <ellipse
+                  cx="40"
+                  cy="8"
+                  rx="4"
+                  ry="6"
+                  fill="#6aab5a"
+                  transform="rotate(-25 40 8)"
+                />
+              </svg>
+            </div>
+            
             <p className="text-base font-medium">
               Clique para carregar uma imagem
             </p>
