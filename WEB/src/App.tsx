@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PaletteSelector from "./components/palette-selector";
 import ImageColorPicker from "./components/image-color-picker";
+import ContentSplatters from "./components/ContentSplatters";
 
 import SmeargleIcon from "./assets/Smeargle_Icon.png";
 import ManchasIcon from "./assets/Manchas_De_Tinta.png";
@@ -168,24 +169,28 @@ export default function App() {
       `}
             />
           </button>
-        </div>               
+        </div>
         {/* =====================================================
             CONTEÚDO
         ====================================================== */}
 
         <div
           className="
-            min-h-0
-            flex-1
-            overflow-y-auto
-            bg-smeargle-cream
-          "
+    relative
+    min-h-0
+    flex-1
+    overflow-y-auto
+    bg-smeargle-cream
+  "
         >
-          {tab === "Imagem" && <ImageColorPicker />}
+          <ContentSplatters />
 
-          {tab === "Personalização" && <PaletteSelector />}
-        </div>
-      </div>
+          <div className="relative z-10">
+            {tab === "Imagem" && <ImageColorPicker />}
+
+            {tab === "Personalização" && <PaletteSelector />}
+          </div>
+        </div>      </div>
     </div>
   );
 }

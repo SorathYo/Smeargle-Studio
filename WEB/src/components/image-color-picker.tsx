@@ -329,23 +329,24 @@ export default function ImageColorPicker() {
                 )
               }
               className={`
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                px-4
-                py-2
-                text-sm
-                font-medium
-                shadow-sm
-                transition
+  flex
+  items-center
+  gap-2
+  rounded-xl
+  border
+  px-4
+  py-2
+  text-sm
+  font-medium
+  shadow-sm
+  transition-all
+  duration-200
 
-                ${isEyedropperActive
-                  ? "border-[#754522] bg-[#754522] text-white"
+  ${isEyedropperActive
+                  ? "border-[#569345] bg-[#569345] text-white"
                   : "border-[#D3C5B4] bg-white text-[#513B2A] hover:bg-[#F4EFE7]"
                 }
-              `}
+`}
             >
               <span>⌕</span>
 
