@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import ContentSplatters from "./ContentSplatters";
 
 type Color = {
   hex: string;
@@ -10,12 +11,41 @@ export default function ImageColorPicker() {
 
   const [image, setImage] = useState<string | null>(null);
 
+  const [zoom, setZoom] = useState(1);
+
   const [dominantColors, setDominantColors] = useState<Color[]>([]);
 
   const [selectedColors, setSelectedColors] = useState<Color[]>([]);
 
   const [isEyedropperActive, setIsEyedropperActive] =
     useState(false);
+
+  const [offsetX, setOffsetX] = useState(0);
+  const [offsetY, setOffsetY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  function zoomIn() {
+    setZoom((previous) =>
+      Math.min(previous + 0.25, 3)
+    );
+    setOffsetX(0);
+    setOffsetY(0);
+  }
+
+  function zoomOut() {
+    setZoom((previous) =>
+      Math.max(previous - 0.25, 0.5)
+    );
+    setOffsetX(0);
+    setOffsetY(0);
+  }
+
+  function resetZoom() {
+    setZoom(1);
+    setOffsetX(0);
+    setOffsetY(0);
+  }
 
   /*
    * =========================================================
@@ -40,6 +70,11 @@ export default function ImageColorPicker() {
 
     setIsEyedropperActive(false);
 
+    setOffsetX(0);
+    setOffsetY(0);
+
+    setZoom(1);
+
     extractDominantColors(imageUrl);
   }
 
@@ -51,6 +86,41 @@ export default function ImageColorPicker() {
 
   function openFilePicker() {
     inputRef.current?.click();
+  }
+
+  /*
+   * =========================================================
+   * DRAG/PAN DA IMAGEM
+   * =========================================================
+   */
+
+  function handleImageMouseDown(
+    event: React.MouseEvent<HTMLImageElement>
+  ) {
+    if (zoom <= 1 || isEyedropperActive) {
+      return;
+    }
+
+    setIsDragging(true);
+    setDragStart({ x: event.clientX - offsetX, y: event.clientY - offsetY });
+  }
+
+  function handleImageMouseMove(
+    event: React.MouseEvent<HTMLImageElement>
+  ) {
+    if (!isDragging || zoom <= 1) {
+      return;
+    }
+
+    const newOffsetX = event.clientX - dragStart.x;
+    const newOffsetY = event.clientY - dragStart.y;
+
+    setOffsetX(newOffsetX);
+    setOffsetY(newOffsetY);
+  }
+
+  function handleImageMouseUp() {
+    setIsDragging(false);
   }
 
   /*
@@ -315,7 +385,7 @@ export default function ImageColorPicker() {
                 />
               </svg>
             </div>
-            
+
             <p className="text-base font-medium">
               Clique para carregar uma imagem
             </p>
@@ -411,37 +481,158 @@ export default function ImageColorPicker() {
 
           <div
             className="
-              relative
-              flex
-              max-h-[55vh]
-              min-h-0
-              w-full
-              items-center
-              justify-center
-              overflow-hidden
-              rounded-2xl
-              border
-              border-[#D5C8B6]
-              bg-[#F7F5ED]
-              shadow-sm
-            "
+    relative
+    flex
+    h-[55vh]
+    min-h-[300px]
+    w-full
+    items-center
+    justify-center
+    overflow-hidden
+    rounded-2xl
+    border
+    border-[#D5C8B6]
+    bg-[#F7F5ED]
+    shadow-sm
+  "
           >
+            <ContentSplatters />
+
+            {/* =====================================================
+      CONTROLES DE ZOOM
+  ====================================================== */}
+
+            <div
+              className="
+      absolute
+      right-3
+      top-3
+      z-20
+      flex
+      items-center
+      gap-1
+      rounded-xl
+      border
+      border-[#D5C8B6]
+      bg-[#F7F3E9]/95
+      p-1
+      shadow-sm
+      backdrop-blur-sm
+    "
+            >
+              {/* diminuir */}
+              <button
+                type="button"
+                onClick={zoomOut}
+                disabled={zoom <= 0.5}
+                className="
+        flex
+        h-8
+        w-8
+        items-center
+        justify-center
+        rounded-lg
+        text-lg
+        font-medium
+        text-[#754522]
+        transition
+
+        hover:bg-[#E8DCC8]
+
+        disabled:cursor-not-allowed
+        disabled:opacity-30
+      "
+                title="Diminuir zoom"
+              >
+                −
+              </button>
+
+              {/* porcentagem */}
+              <button
+                type="button"
+                onClick={resetZoom}
+                className="
+        min-w-[52px]
+        rounded-lg
+        px-2
+        py-1.5
+        text-xs
+        font-semibold
+        text-[#754522]
+        transition
+        hover:bg-[#E8DCC8]
+      "
+                title="Restaurar zoom"
+              >
+                {Math.round(zoom * 100)}%
+              </button>
+
+              {/* aumentar */}
+              <button
+                type="button"
+                onClick={zoomIn}
+                disabled={zoom >= 3}
+                className="
+        flex
+        h-8
+        w-8
+        items-center
+        justify-center
+        rounded-lg
+        text-lg
+        font-medium
+        text-[#754522]
+        transition
+
+        hover:bg-[#E8DCC8]
+
+        disabled:cursor-not-allowed
+        disabled:opacity-30
+      "
+                title="Aumentar zoom"
+              >
+                +
+              </button>
+            </div>
+
+            {/* =====================================================
+      IMAGEM
+  ====================================================== */}
+
             <img
               src={image}
               alt="Imagem carregada"
               onClick={handleImageClick}
+              onMouseDown={handleImageMouseDown}
+              onMouseMove={handleImageMouseMove}
+              onMouseUp={handleImageMouseUp}
+              onMouseLeave={handleImageMouseUp}
               className={`
-                block
-                max-h-[55vh]
-                max-w-full
-                object-contain
-                p-2
+      relative
+      z-10
+      block
+      max-h-full
+      max-w-full
+      select-none
+      object-contain
+      transition-transform
+      duration-200
+      ease-out
 
-                ${isEyedropperActive
+      ${isEyedropperActive
                   ? "cursor-crosshair"
-                  : "cursor-default"
+                  : zoom > 1
+                    ? isDragging
+                      ? "cursor-grabbing"
+                      : "cursor-grab"
+                    : "cursor-default"
                 }
-              `}
+    `}
+              style={{
+                transform: `scale(${zoom}) translate(${offsetX}px, ${offsetY}px)`,
+                transformOrigin: "center center",
+              }}
+              draggable={false}
             />
           </div>
 
@@ -449,58 +640,57 @@ export default function ImageColorPicker() {
               PALETA
           ================================================== */}
 
+      <div className="mt-5">
+
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#927654]">
+          Paleta
+        </p>
+
+        {/* CORES DOMINANTES */}
+
+        <div className="space-y-2">
+
+          {dominantColors.map(
+            (color, index) => (
+              <ColorRow
+                key={`${color.hex}-${index}`}
+                color={color.hex}
+                label="dominante"
+              />
+            )
+          )}
+
+        </div>
+
+        {/* CORES DO CONTA-GOTAS */}
+
+        {selectedColors.length > 0 && (
           <div className="mt-5">
 
             <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#927654]">
-              Paleta
+              Cores selecionadas
             </p>
-
-            {/* CORES DOMINANTES */}
 
             <div className="space-y-2">
 
-              {dominantColors.map(
+              {selectedColors.map(
                 (color, index) => (
                   <ColorRow
                     key={`${color.hex}-${index}`}
                     color={color.hex}
-                    label="dominante"
+                    label="conta-gotas"
                   />
                 )
               )}
 
             </div>
 
-            {/* CORES DO CONTA-GOTAS */}
-
-            {selectedColors.length > 0 && (
-              <div className="mt-5">
-
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#927654]">
-                  Cores selecionadas
-                </p>
-
-                <div className="space-y-2">
-
-                  {selectedColors.map(
-                    (color, index) => (
-                      <ColorRow
-                        key={`${color.hex}-${index}`}
-                        color={color.hex}
-                        label="conta-gotas"
-                      />
-                    )
-                  )}
-
-                </div>
-
-              </div>
-            )}
-
           </div>
-        </>
-      )}
+        )}
 
+      </div>
+    </>
+      )}
     </div>
   );
 }
