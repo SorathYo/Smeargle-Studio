@@ -7,6 +7,7 @@ import ManchasIcon from "./assets/Manchas_De_Tinta.png";
 
 export default function App() {
   const [tab, setTab] = useState("Imagem");
+  const [hoverTab, setHoverTab] = useState<string | null>(null);
 
   return (
     <div className="h-screen w-screen overflow-hidden p-4">
@@ -69,49 +70,105 @@ export default function App() {
 
         <div
           className="
-            flex
-            shrink-0
-            border-b
-            bg-smeargle-cream
-            text-sm
-            font-semibold
-            text-smeargle-dark
-          "
+    flex
+    shrink-0
+    border-b
+    bg-smeargle-cream
+    text-sm
+    font-semibold
+    text-smeargle-dark
+  "
           style={{ borderColor: "#E1D4C2" }}
         >
+
           <button
+            type="button"
             onClick={() => setTab("Imagem")}
-            className={`
-              flex-1
-              py-2
-              text-center
-              transition
-              ${tab === "Imagem"
-                ? "bg-smeargle-brown text-white"
-                : "hover:bg-smeargle-brown hover:text-white"
-              }
-            `}
+            onMouseEnter={() => setHoverTab("Imagem")}
+            onMouseLeave={() => setHoverTab(null)}
+            className="
+      relative
+      flex-1
+      py-3
+      text-center
+      text-[#754522]
+    "
           >
             Imagem
+
+            <span
+              className={`
+        absolute
+        bottom-0
+        left-1/2
+        h-[3px]
+        -translate-x-1/2
+        rounded-t-full
+
+        bg-gradient-to-r
+        from-[#754522]
+        via-[#8C613E]
+        to-[#6E9F4F]
+
+        transition-all
+        duration-300
+        ease-out
+
+        ${(
+                  hoverTab === "Imagem" ||
+                  (hoverTab === null && tab === "Imagem")
+                )
+                  ? "w-[70%]"
+                  : "w-0"
+                }
+      `}
+            />
           </button>
 
           <button
+            type="button"
             onClick={() => setTab("Personalização")}
-            className={`
-              flex-1
-              py-2
-              text-center
-              transition
-              ${tab === "Personalização"
-                ? "bg-smeargle-brown text-white"
-                : "hover:bg-smeargle-brown hover:text-white"
-              }
-            `}
+            onMouseEnter={() => setHoverTab("Personalização")}
+            onMouseLeave={() => setHoverTab(null)}
+            className="
+      relative
+      flex-1
+      py-3
+      text-center
+      text-[#754522]
+    "
           >
             Personalização
-          </button>
-        </div>
 
+            <span
+              className={`
+        absolute
+        bottom-0
+        left-1/2
+        h-[3px]
+        -translate-x-1/2
+        rounded-t-full
+
+        bg-gradient-to-r
+        from-[#754522]
+        via-[#8C613E]
+        to-[#6E9F4F]
+
+        transition-all
+        duration-300
+        ease-out
+
+        ${(
+                  hoverTab === "Personalização" ||
+                  (hoverTab === null && tab === "Personalização")
+                )
+                  ? "w-[70%]"
+                  : "w-0"
+                }
+      `}
+            />
+          </button>
+        </div>               
         {/* =====================================================
             CONTEÚDO
         ====================================================== */}
