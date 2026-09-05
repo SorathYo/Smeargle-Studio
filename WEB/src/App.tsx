@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PaletteSelector from "./components/palette-selector";
+import type { PaletteColor } from "./components/palette-selector";
 import ImageColorPicker from "./components/image-color-picker";
 import ContentSplatters from "./components/ContentSplatters";
 
@@ -9,6 +10,9 @@ import ManchasIcon from "./assets/Manchas_De_Tinta.png";
 export default function App() {
   const [tab, setTab] = useState("Imagem");
   const [hoverTab, setHoverTab] = useState<string | null>(null);
+
+  // A paleta pertence à aplicação para sobreviver à troca entre as abas.
+  const [palette, setPalette] = useState<PaletteColor[]>([]);
 
   return (
     <div className="h-screen w-screen overflow-hidden p-4">
@@ -188,7 +192,12 @@ export default function App() {
           <div className="relative z-10">
             {tab === "Imagem" && <ImageColorPicker />}
 
-            {tab === "Personalização" && <PaletteSelector />}
+            {tab === "Personalização" && (
+              <PaletteSelector
+                palette={palette}
+                onUpdate={setPalette}
+              />
+            )}
           </div>
         </div>      </div>
     </div>
