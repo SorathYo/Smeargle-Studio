@@ -132,8 +132,8 @@ export default function App() {
 
           <button
             type="button"
-            onClick={() => setTab("Personalização")}
-            onMouseEnter={() => setHoverTab("Personalização")}
+            onClick={() => setTab("Paleta")}
+            onMouseEnter={() => setHoverTab("Paleta")}
             onMouseLeave={() => setHoverTab(null)}
             className="
       relative
@@ -143,7 +143,7 @@ export default function App() {
       text-[#754522]
     "
           >
-            Personalização
+            Paleta
 
             <span
               className={`
@@ -164,8 +164,8 @@ export default function App() {
         ease-out
 
         ${(
-                  hoverTab === "Personalização" ||
-                  (hoverTab === null && tab === "Personalização")
+                  hoverTab === "Paleta" ||
+                  (hoverTab === null && tab === "Paleta")
                 )
                   ? "w-[70%]"
                   : "w-0"
@@ -192,7 +192,7 @@ export default function App() {
           <div className="relative z-10">
             {tab === "Imagem" && <ImageColorPicker />}
 
-            {tab === "Personalização" && (
+            {tab === "Paleta" && (
               <PaletteSelector
                 palette={palette}
                 onUpdate={setPalette}

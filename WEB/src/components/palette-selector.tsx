@@ -499,7 +499,7 @@ export default function PaletteSelector({
   }
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden py-6">
       {/* ===================================================
           CONTEÚDO
       ================================================== */}
@@ -598,6 +598,7 @@ export default function PaletteSelector({
                   w-full
                   cursor-pointer
                   opacity-0
+                  outline-none
                 "
             />
           </label>
@@ -617,13 +618,14 @@ export default function PaletteSelector({
                 uppercase
                 tracking-[0.18em]
                 text-[#9b7954]
+                pl-6
               "
           >
             HEX
           </label>
 
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-sm">
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-[#9b7954]">
               #
             </span>
 
@@ -640,7 +642,8 @@ export default function PaletteSelector({
                   border
                   border-[#CDBB9F]
                   bg-white
-                  px-3
+                  pl-7
+                  pr-3
                   py-2
                   font-mono
                   text-sm

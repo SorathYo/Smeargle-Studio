@@ -41,7 +41,7 @@ Error generating stack: `+e.message+`
             border-2\r
             border-white\r
             shadow-md\r
-          `,style:{left:`${i/360*100}%`,backgroundColor:`hsl(${i}, 100%, 50%)`}})]})]})}function y({palette:e,onUpdate:t}){let[n,r]=(0,l.useState)(`#8b5e3c`),[i,a]=(0,l.useState)(`8b5e3c`),[o,s]=(0,l.useState)(``);function c(e){r(e),a(e.replace(`#`,``)),s(``)}function u(e){c(e.target.value)}function d(e){let t=e.target.value.replace(`#`,``).slice(0,6);a(t);let n=`#${t}`;/^#?[0-9a-f]{6}$/i.test(n)?(r(n.toLowerCase()),s(``)):s(`Digite uma cor HEX válida.`)}function m(){t([{hex:n,source:`picker`},...e.slice(0,2)])}return(0,f.jsx)(`div`,{className:`relative overflow-hidden`,children:(0,f.jsxs)(`div`,{className:`relative z-10 mx-auto max-w-2xl`,children:[(0,f.jsxs)(`div`,{className:`\r
+          `,style:{left:`${i/360*100}%`,backgroundColor:`hsl(${i}, 100%, 50%)`}})]})]})}function y({palette:e,onUpdate:t}){let[n,r]=(0,l.useState)(`#8b5e3c`),[i,a]=(0,l.useState)(`8b5e3c`),[o,s]=(0,l.useState)(``);function c(e){r(e),a(e.replace(`#`,``)),s(``)}function u(e){c(e.target.value)}function d(e){let t=e.target.value.replace(`#`,``).slice(0,6);a(t);let n=`#${t}`;/^#?[0-9a-f]{6}$/i.test(n)?(r(n.toLowerCase()),s(``)):s(`Digite uma cor HEX válida.`)}function m(){t([{hex:n,source:`picker`},...e.slice(0,2)])}return(0,f.jsx)(`div`,{className:`relative overflow-hidden py-6`,children:(0,f.jsxs)(`div`,{className:`relative z-10 mx-auto max-w-2xl`,children:[(0,f.jsxs)(`div`,{className:`\r
     relative\r
     mb-5\r
     h-28\r
@@ -79,6 +79,7 @@ Error generating stack: `+e.message+`
                   w-full\r
                   cursor-pointer\r
                   opacity-0\r
+                  outline-none\r
                 `})})]}),(0,f.jsxs)(`div`,{children:[(0,f.jsx)(`label`,{htmlFor:`hex-input`,className:`\r
                 mb-2\r
                 block\r
@@ -88,13 +89,15 @@ Error generating stack: `+e.message+`
                 uppercase\r
                 tracking-[0.18em]\r
                 text-[#9b7954]\r
-              `,children:`HEX`}),(0,f.jsxs)(`div`,{className:`flex items-center gap-2`,children:[(0,f.jsx)(`span`,{className:`font-mono text-sm`,children:`#`}),(0,f.jsx)(`input`,{id:`hex-input`,type:`text`,value:i,onChange:d,maxLength:6,spellCheck:!1,className:`\r
+                pl-6\r
+              `,children:`HEX`}),(0,f.jsxs)(`div`,{className:`relative`,children:[(0,f.jsx)(`span`,{className:`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-[#9b7954]`,children:`#`}),(0,f.jsx)(`input`,{id:`hex-input`,type:`text`,value:i,onChange:d,maxLength:6,spellCheck:!1,className:`\r
                   w-full\r
                   rounded-xl\r
                   border\r
                   border-[#CDBB9F]\r
                   bg-white\r
-                  px-3\r
+                  pl-7\r
+                  pr-3\r
                   py-2\r
                   font-mono\r
                   text-sm\r
@@ -323,13 +326,13 @@ Error generating stack: `+e.message+`
         ease-out
 
         ${n===`Imagem`||n===null&&e===`Imagem`?`w-[70%]`:`w-0`}
-      `})]}),(0,f.jsxs)(`button`,{type:`button`,onClick:()=>t(`Personalização`),onMouseEnter:()=>r(`Personalização`),onMouseLeave:()=>r(null),className:`
+      `})]}),(0,f.jsxs)(`button`,{type:`button`,onClick:()=>t(`Paleta`),onMouseEnter:()=>r(`Paleta`),onMouseLeave:()=>r(null),className:`
       relative
       flex-1
       py-3
       text-center
       text-[#754522]
-    `,children:[`Personalização`,(0,f.jsx)(`span`,{className:`
+    `,children:[`Paleta`,(0,f.jsx)(`span`,{className:`
         absolute
         bottom-0
         left-1/2
@@ -346,11 +349,11 @@ Error generating stack: `+e.message+`
         duration-300
         ease-out
 
-        ${n===`Personalização`||n===null&&e===`Personalização`?`w-[70%]`:`w-0`}
+        ${n===`Paleta`||n===null&&e===`Paleta`?`w-[70%]`:`w-0`}
       `})]})]}),(0,f.jsxs)(`div`,{className:`
     relative
     min-h-0
     flex-1
     overflow-y-auto
     bg-smeargle-cream
-  `,children:[(0,f.jsx)(b,{}),(0,f.jsxs)(`div`,{className:`relative z-10`,children:[e===`Imagem`&&(0,f.jsx)(x,{}),e===`Personalização`&&(0,f.jsx)(y,{palette:i,onUpdate:a})]})]}),`      `]})})}(0,u.createRoot)(document.getElementById(`root`)).render((0,f.jsx)(l.StrictMode,{children:(0,f.jsx)(te,{})}));
+  `,children:[(0,f.jsx)(b,{}),(0,f.jsxs)(`div`,{className:`relative z-10`,children:[e===`Imagem`&&(0,f.jsx)(x,{}),e===`Paleta`&&(0,f.jsx)(y,{palette:i,onUpdate:a})]})]}),`      `]})})}(0,u.createRoot)(document.getElementById(`root`)).render((0,f.jsx)(l.StrictMode,{children:(0,f.jsx)(te,{})}));
