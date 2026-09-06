@@ -15,7 +15,7 @@ export default function App() {
   const [palette, setPalette] = useState<PaletteColor[]>([]);
 
   return (
-    <div className="h-screen w-screen overflow-hidden p-4">
+    <div className="h-screen w-screen overflow-hidden p-2 sm:p-4">
       <div
         className="
           mx-auto
@@ -26,7 +26,7 @@ export default function App() {
           max-w-[1000px]
           flex-col
           overflow-hidden
-          rounded-2xl
+          rounded-xl sm:rounded-2xl
           shadow-lg
         "
       >
@@ -34,27 +34,27 @@ export default function App() {
             TOPO
         ====================================================== */}
 
-        <div className="relative shrink-0 bg-smeargle-brown p-4 text-left">
+        <div className="relative shrink-0 bg-smeargle-brown p-3 text-left sm:p-4">
           <div className="flex items-center justify-start gap-2">
             <img
               src={SmeargleIcon}
               alt="Ícone Smeargle"
-              className="h-20 w-20"
+              className="h-12 w-12 sm:h-20 sm:w-20"
             />
 
             <div>
-              <h1 className="titulo text-4xl font-bold text-white">
+              <h1 className="titulo text-xl font-bold text-white sm:text-4xl">
                 Smeargle Color
               </h1>
 
-              <p className="font-sans text-base text-[#D4A058]">
+              <p className="font-sans text-[9px] text-[#D4A058] sm:text-base">
                 Seletor de cores do artista
               </p>
 
               <img
                 src={ManchasIcon}
                 alt="Manchas de tinta"
-                className="mt-2 h-5 w-auto rounded"
+                className="mt-1 h-3 w-auto rounded sm:mt-2 sm:h-5"
               />
             </div>
           </div>
@@ -79,9 +79,10 @@ export default function App() {
     shrink-0
     border-b
     bg-smeargle-cream
-    text-sm
+    text-[10px]
     font-semibold
     text-smeargle-dark
+    sm:text-sm
   "
           style={{ borderColor: "#E1D4C2" }}
         >
@@ -94,9 +95,10 @@ export default function App() {
             className="
       relative
       flex-1
-      py-3
+      py-2
       text-center
       text-[#754522]
+      sm:py-3
     "
           >
             Imagem

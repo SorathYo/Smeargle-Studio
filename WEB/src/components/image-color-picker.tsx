@@ -288,7 +288,7 @@ export default function ImageColorPicker() {
   }
 
   return (
-    <div className="w-full p-4 text-sm text-smeargle-dark sm:p-6">
+    <div className="w-full p-3 text-sm text-smeargle-dark sm:p-6">
 
       {/* =====================================================
           INPUT INVISÍVEL
@@ -313,7 +313,7 @@ export default function ImageColorPicker() {
           className="
             relative
             flex
-            h-64
+            h-52
             w-full
             items-center
             justify-center
@@ -330,6 +330,8 @@ export default function ImageColorPicker() {
             hover:border-[#A99068]
 
             active:scale-[0.995]
+
+            sm:h-64
           "
         >
           <div className="pointer-events-none text-center">
@@ -406,7 +408,7 @@ export default function ImageColorPicker() {
         <>
           {/* BOTÕES */}
 
-          <div className="mb-3 flex flex-wrap gap-2">
+          <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
 
             {/* CARREGAR OUTRA IMAGEM */}
 
@@ -430,6 +432,7 @@ export default function ImageColorPicker() {
                 hover:bg-[#63391D]
 
                 active:scale-[0.98]
+                sm:w-auto
               "
             >
               <span>↥</span>
@@ -447,6 +450,7 @@ export default function ImageColorPicker() {
                 )
               }
               className={`
+  w-full
   flex
   items-center
   gap-2
@@ -459,6 +463,7 @@ export default function ImageColorPicker() {
   shadow-sm
   transition-all
   duration-200
+  sm:w-auto
 
   ${isEyedropperActive
                   ? "border-[#569345] bg-[#569345] text-white"
@@ -483,8 +488,8 @@ export default function ImageColorPicker() {
             className="
     relative
     flex
-    h-[55vh]
-    min-h-[300px]
+    h-[42vh]
+    min-h-[220px]
     w-full
     items-center
     justify-center
@@ -494,6 +499,9 @@ export default function ImageColorPicker() {
     border-[#D5C8B6]
     bg-[#F7F5ED]
     shadow-sm
+
+    sm:h-[55vh]
+    sm:min-h-[300px]
   "
           >
             <ContentSplatters />

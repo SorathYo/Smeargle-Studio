@@ -499,23 +499,26 @@ export default function PaletteSelector({
   }
 
   return (
-    <div className="relative overflow-hidden py-6">
+    <div className="relative overflow-hidden px-3 py-4 sm:px-6 sm:py-6">
       {/* ===================================================
           CONTEÚDO
       ================================================== */}
 
-      <div className="relative z-10 mx-auto max-w-2xl">
+      <div className="relative z-10 mx-auto w-full max-w-2xl">
 
         {/* PREVIEW */}
 
         <div
           className="
     relative
-    mb-5
-    h-28
+    mb-4
+    h-24
     overflow-hidden
     rounded-2xl
     shadow-sm
+
+    sm:mb-5
+    sm:h-28
   "
           style={{ backgroundColor: hex }}
         >
@@ -561,7 +564,7 @@ export default function PaletteSelector({
         Seletor de cores
       </p>
 
-      <div className="grid gap-3 md:grid-cols-[48px_1fr]">
+      <div className="grid grid-cols-[48px_minmax(0,1fr)] gap-3">
 
         {/* seletor nativo */}
 
