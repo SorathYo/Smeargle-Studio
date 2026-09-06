@@ -1,18 +1,79 @@
 import { useState } from "react";
 import PaletteSelector from "./components/palette-selector";
 import type { PaletteColor } from "./components/palette-selector";
+import PaletteStrip from "./components/PaletteStrip";
 import ImageColorPicker from "./components/image-color-picker";
 import ContentSplatters from "./components/ContentSplatters";
 
 import SmeargleIcon from "./assets/Smeargle_Icon.png";
 import ManchasIcon from "./assets/Manchas_De_Tinta.png";
 
+const CURRENT_PALETTE_KEY = "smeargle-current-palette";
+const PALETTE_HISTORY_KEY = "smeargle-palette-history";
+
+function readStoredValue<T>(key: string, fallback: T): T {
+  try {
+    const storedValue = localStorage.getItem(key);
+
+    return storedValue ? JSON.parse(storedValue) as T : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function App() {
   const [tab, setTab] = useState("Imagem");
   const [hoverTab, setHoverTab] = useState<string | null>(null);
 
-  // A paleta pertence à aplicação para sobreviver à troca entre as abas.
-  const [palette, setPalette] = useState<PaletteColor[]>([]);
+  const [palette, setPalette] = useState<PaletteColor[]>(() =>
+    readStoredValue<PaletteColor[]>(CURRENT_PALETTE_KEY, [])
+  );
+
+  const [paletteHistory, setPaletteHistory] = useState<PaletteColor[][]>(() =>
+    readStoredValue<PaletteColor[][]>(PALETTE_HISTORY_KEY, [])
+  );
+
+  function updatePalette(nextPalette: PaletteColor[]) {
+    setPalette(nextPalette);
+    localStorage.setItem(
+      CURRENT_PALETTE_KEY,
+      JSON.stringify(nextPalette)
+    );
+
+    if (nextPalette.length === 0) return;
+
+    setPaletteHistory((previousHistory) => {
+      const nextHistory = [
+        nextPalette,
+        ...previousHistory.filter(
+          (previousPalette) =>
+            JSON.stringify(previousPalette) !== JSON.stringify(nextPalette)
+        ),
+      ].slice(0, 12);
+
+      localStorage.setItem(
+        PALETTE_HISTORY_KEY,
+        JSON.stringify(nextHistory)
+      );
+
+      return nextHistory;
+    });
+  }
+
+  function removePaletteHistory(indexToRemove: number) {
+    setPaletteHistory((previousHistory) => {
+      const nextHistory = previousHistory.filter(
+        (_, index) => index !== indexToRemove
+      );
+
+      localStorage.setItem(
+        PALETTE_HISTORY_KEY,
+        JSON.stringify(nextHistory)
+      );
+
+      return nextHistory;
+    });
+  }
 
   return (
     <div className="h-screen w-screen overflow-hidden p-2 sm:p-4">
@@ -44,7 +105,7 @@ export default function App() {
 
             <div>
               <h1 className="titulo text-xl font-bold text-white sm:text-4xl">
-                Smeargle Color
+                Smeargle Studio
               </h1>
 
               <p className="font-sans text-[9px] text-[#D4A058] sm:text-base">
@@ -175,6 +236,48 @@ export default function App() {
       `}
             />
           </button>
+
+          <button
+            type="button"
+            onClick={() => setTab("Histórico")}
+            onMouseEnter={() => setHoverTab("Histórico")}
+            onMouseLeave={() => setHoverTab(null)}
+            className="
+      relative
+      flex-1
+      py-2
+      text-center
+      text-[#754522]
+      sm:py-3
+    "
+          >
+            Histórico
+
+            <span
+              className={`
+        absolute
+        bottom-0
+        left-1/2
+        h-[3px]
+        -translate-x-1/2
+        rounded-t-full
+        bg-gradient-to-r
+        from-[#754522]
+        via-[#8C613E]
+        to-[#6E9F4F]
+        transition-all
+        duration-300
+        ease-out
+        ${(
+                  hoverTab === "Histórico" ||
+                  (hoverTab === null && tab === "Histórico")
+                )
+                  ? "w-[70%]"
+                  : "w-0"
+                }
+      `}
+            />
+          </button>
         </div>
         {/* =====================================================
             CONTEÚDO
@@ -197,8 +300,42 @@ export default function App() {
             {tab === "Paleta" && (
               <PaletteSelector
                 palette={palette}
-                onUpdate={setPalette}
+                onUpdate={updatePalette}
               />
+            )}
+
+            {tab === "Histórico" && (
+              <div className="px-3 py-4 sm:px-6 sm:py-6">
+                {paletteHistory.length > 0 ? (
+                  paletteHistory.map((previousPalette, index) => (
+                    <div
+                      key={`${index}-${previousPalette.map((color) => color.hex).join("-")}`}
+                      className="flex items-start gap-2"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => removePaletteHistory(index)}
+                        aria-label={`Excluir paleta anterior ${index + 1}`}
+                        title="Excluir paleta"
+                        className="mt-7 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-[#9b7954] transition hover:bg-[#eadcc9] hover:text-[#754b2f]"
+                      >
+                        &times;
+                      </button>
+
+                      <div className="min-w-0 flex-1">
+                        <PaletteStrip
+                          palette={previousPalette}
+                          title={`Paleta anterior ${index + 1}`}
+                        />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="py-8 text-center text-sm text-[#9b7954]">
+                    Nenhuma paleta salva anteriormente.
+                  </p>
+                )}
+              </div>
             )}
           </div>
         </div>      </div>

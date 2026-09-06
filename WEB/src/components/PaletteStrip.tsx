@@ -2,16 +2,20 @@ import type { PaletteColor } from "./palette-selector";
 
 interface PaletteStripProps {
   palette: PaletteColor[];
+  title?: string;
 }
 
 /** Exibe as cores salvas como uma faixa de amostras, sem duplicar a lógica do seletor. */
-export default function PaletteStrip({ palette }: PaletteStripProps) {
+export default function PaletteStrip({
+  palette,
+  title = "Paleta atual",
+}: PaletteStripProps) {
   if (palette.length === 0) return null;
 
   return (
     <section className="mt-7">
       <p className="mb-3 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9b7954]">
-        Paleta atual
+        {title}
       </p>
 
       <div className="relative overflow-hidden rounded-2xl border border-[#d5c8b6] bg-[#eadcc9] p-3 shadow-sm">
