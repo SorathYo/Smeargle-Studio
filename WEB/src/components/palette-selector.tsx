@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
+import PaletteStrip from "./PaletteStrip";
 
 export interface PaletteColor {
   hex: string;
@@ -66,32 +67,6 @@ function hexToHsv(hex: string): [number, number, number] | null {
     max === 0 ? 0 : delta / max,
     max,
   ];
-}
-
-function luminance(hex: string): number {
-  const rgb = hexToRgb(hex);
-
-  if (!rgb) return 0;
-
-  const values = rgb.map((channel) => {
-    const value = channel / 255;
-
-    return value <= 0.03928
-      ? value / 12.92
-      : Math.pow((value + 0.055) / 1.055, 2.4);
-  });
-
-  return (
-    0.2126 * values[0] +
-    0.7152 * values[1] +
-    0.0722 * values[2]
-  );
-}
-
-function textColor(hex: string): "#3b200a" | "#f5ede0" {
-  return luminance(hex) > 0.35
-    ? "#3b200a"
-    : "#f5ede0";
 }
 
 /* =========================================================
@@ -279,7 +254,7 @@ function HSVPicker({
     const newSat = Math.min(
       Math.max(
         (event.clientX - rect.left) /
-          rect.width,
+        rect.width,
         0
       ),
       1
@@ -288,8 +263,8 @@ function HSVPicker({
     const newValue = Math.min(
       Math.max(
         1 -
-          (event.clientY - rect.top) /
-            rect.height,
+        (event.clientY - rect.top) /
+        rect.height,
         0
       ),
       1
@@ -318,7 +293,7 @@ function HSVPicker({
       Math.max(
         ((event.clientX - rect.left) /
           rect.width) *
-          360,
+        360,
         0
       ),
       360
@@ -355,7 +330,9 @@ function HSVPicker({
             w-full
             cursor-crosshair
             rounded-xl
+            shadow-sm
           "
+          style={{ touchAction: "none" }}
           onMouseDown={(event) => {
             setDraggingSquare(true);
             updateSquareFromPointer(event);
@@ -374,14 +351,14 @@ function HSVPicker({
           className="
             pointer-events-none
             absolute
-            h-5
-            w-5
+            h-4
+            w-4
             -translate-x-1/2
             -translate-y-1/2
             rounded-full
             border-2
             border-white
-            shadow
+            shadow-md
           "
           style={{
             left: `${sat * 100}%`,
@@ -403,7 +380,9 @@ function HSVPicker({
             w-full
             cursor-pointer
             rounded-full
+            shadow-sm
           "
+          style={{ touchAction: "none" }}
           onMouseDown={(event) => {
             setDraggingHue(true);
             updateHueFromPointer(event);
@@ -429,7 +408,7 @@ function HSVPicker({
             rounded-full
             border-2
             border-white
-            shadow
+            shadow-md
           "
           style={{
             left: `${(hue / 360) * 100}%`,
@@ -531,41 +510,72 @@ export default function PaletteSelector({
 
         <div
           className="
-            mb-5
-            flex
-            h-20
-            items-center
-            justify-center
-            rounded-2xl
-            shadow-sm
-          "
-          style={{
-            backgroundColor: hex,
-            color: textColor(hex),
-          }}
+    relative
+    mb-5
+    h-28
+    overflow-hidden
+    rounded-2xl
+    shadow-sm
+  "
+          style={{ backgroundColor: hex }}
         >
-          <span className="font-mono text-lg font-bold">
+          {/* risco de pincel */}
+          <svg
+            className="absolute inset-0 h-full w-full pointer-events-none"
+            viewBox="0 0 400 100"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M-10 72 C70 35, 130 35, 205 52 S330 70, 410 35"
+              fill="none"
+              stroke="rgba(255,255,255,0.28)"
+              strokeWidth="10"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          {/* etiqueta HEX */}
+          <div
+            className="
+      absolute
+      bottom-3
+      left-3
+      rounded-lg
+      bg-[#754b2f]
+      px-3
+      py-1
+      font-mono
+      text-xs
+      font-bold
+      text-[#f5ede0]
+      shadow-sm
+    "
+          >
             #{hex.replace("#", "").toUpperCase()}
-          </span>
+          </div>
         </div>
 
-        {/* CONTROLES */}
+      {/* CONTROLES */}
 
-        <div className="grid gap-5 md:grid-cols-[auto_1fr]">
+      <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9b7954]">
+        Seletor de cores
+      </p>
 
-          {/* seletor nativo */}
+      <div className="grid gap-3 md:grid-cols-[48px_1fr]">
 
-          <div>
-            <p className="mb-2 text-left text-xs font-semibold uppercase tracking-wide opacity-70">
-              Cor
-            </p>
+        {/* seletor nativo */}
 
-            <label
-              className="
+        <div>
+          <p className="mb-2 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9b7954]">
+            Cor
+          </p>
+
+          <label
+            className="
                 relative
                 block
                 h-12
-                w-20
+                w-12
                 cursor-pointer
                 overflow-hidden
                 rounded-xl
@@ -573,15 +583,15 @@ export default function PaletteSelector({
                 border-[#CDBB9F]
                 shadow-sm
               "
-              style={{
-                backgroundColor: hex,
-              }}
-            >
-              <input
-                type="color"
-                value={hex}
-                onChange={handleNativeColorChange}
-                className="
+            style={{
+              backgroundColor: hex,
+            }}
+          >
+            <input
+              type="color"
+              value={hex}
+              onChange={handleNativeColorChange}
+              className="
                   absolute
                   inset-0
                   h-full
@@ -589,42 +599,42 @@ export default function PaletteSelector({
                   cursor-pointer
                   opacity-0
                 "
-              />
-            </label>
-          </div>
+            />
+          </label>
+        </div>
 
-          {/* HEX */}
+        {/* HEX */}
 
-          <div>
-            <label
-              htmlFor="hex-input"
-              className="
+        <div>
+          <label
+            htmlFor="hex-input"
+            className="
                 mb-2
                 block
                 text-left
-                text-xs
+                text-[10px]
                 font-semibold
                 uppercase
-                tracking-wide
-                opacity-70
+                tracking-[0.18em]
+                text-[#9b7954]
               "
-            >
-              HEX
-            </label>
+          >
+            HEX
+          </label>
 
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-sm">
-                #
-              </span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-sm">
+              #
+            </span>
 
-              <input
-                id="hex-input"
-                type="text"
-                value={hexInput}
-                onChange={handleHexInputChange}
-                maxLength={6}
-                spellCheck={false}
-                className="
+            <input
+              id="hex-input"
+              type="text"
+              value={hexInput}
+              onChange={handleHexInputChange}
+              maxLength={6}
+              spellCheck={false}
+              className="
                   w-full
                   rounded-xl
                   border
@@ -641,43 +651,48 @@ export default function PaletteSelector({
                   focus:ring-2
                   focus:ring-[#8b5e3c]/10
                 "
-                placeholder="8b5e3c"
-              />
-            </div>
-
-            {hexError && (
-              <p className="mt-1 text-left text-xs text-[#a34f35]">
-                {hexError}
-              </p>
-            )}
+              placeholder="8b5e3c"
+            />
           </div>
+
+          {hexError && (
+            <p className="mt-1 text-left text-xs text-[#a34f35]">
+              {hexError}
+            </p>
+          )}
         </div>
+      </div>
 
-        {/* HSV */}
+      {/* HSV */}
 
-        <div className="mt-6">
-          <p className="mb-3 text-left text-xs font-semibold uppercase tracking-wide opacity-70">
-            Seletor de cores
-          </p>
+      <div className="mt-6">
+        <p className="mb-3 text-left text-[10px] font-semibold uppercase tracking-[0.18em] text-[#9b7954]">
+          Ajuste fino
+        </p>
 
-          <HSVPicker
-            hex={hex}
-            onChange={handleHexChange}
-          />
-        </div>
+        <HSVPicker
+          hex={hex}
+          onChange={handleHexChange}
+        />
+      </div>
 
-        {/* BOTÃO */}
+      {/* BOTÃO */}
 
-        <button
-          type="button"
-          onClick={addToPalette}
-          className="
+      <button
+        type="button"
+        onClick={addToPalette}
+        className="
             mt-6
             w-full
+            flex
+            items-center
+            justify-center
+            gap-2
             rounded-xl
             bg-[#8b5e3c]
             px-4
-            py-3
+            py-2.5
+            text-sm
             font-semibold
             text-white
             shadow-sm
@@ -685,53 +700,15 @@ export default function PaletteSelector({
             hover:bg-[#754b2f]
             active:scale-[0.99]
           "
-        >
-          Adicionar à paleta
-        </button>
+      >
+        <span className="text-lg leading-none">+</span>
+        <span>Adicionar à paleta</span>
+      </button>
 
-        {/* PALETA */}
+      {/* PALETA */}
 
-        {palette.length > 0 && (
-          <div className="mt-6">
-            <p className="mb-3 text-left text-xs font-semibold uppercase tracking-wide opacity-70">
-              Paleta atual
-            </p>
-
-            <div className="grid grid-cols-3 gap-3">
-              {palette.map((color, index) => (
-                <div
-                  key={`${color.hex}-${index}`}
-                  className="
-                    overflow-hidden
-                    rounded-xl
-                    border
-                    border-[#D5C8B6]
-                    bg-white
-                    shadow-sm
-                  "
-                >
-                  <div
-                    className="h-14"
-                    style={{
-                      backgroundColor: color.hex,
-                    }}
-                  />
-
-                  <div className="p-2">
-                    <p className="font-mono text-xs font-semibold">
-                      {color.hex}
-                    </p>
-
-                    <p className="mt-1 text-[10px] opacity-60">
-                      🎨 manual
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      <PaletteStrip palette={palette} />
+    </div>
     </div>
   );
 }
